@@ -19,6 +19,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Tarea</th>
+                    <th>Horas</th>
                     <th>Acción</th>
                 </tr>
                 </thead>
@@ -26,13 +27,18 @@
                 <tr th:each="tarea: ${tareas}">
                     <td th:text="${tarea.id}"></td>
                     <td th:text="${tarea.titulo}"></td>
+                    <td th:text="${tarea.duracion}"></td>
                     <td><a class="btn btn-primary btn-xs" th:href="@{/tareas/{id}/editar(id=${tarea.id})}"/>editar</a>
                         <button class="btn btn-danger btn-xs" onmouseover="" style="cursor: pointer;"
                            th:onclick="'del(\'/tareas/' + ${tarea.id} + '\')'">borrar</button>
+                        <form th:action="@{/tareas/{id}/añadirDuracion(id=${tarea.id})}" th:method="post">
+                            <button class="btn btn-primary btn-xs" type="submit" th:if="${tarea.duracion < 10}">+1</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <h8 th:text="'Duración total tareas: ' + ${duracionTotal}"></h8>
             <p><a class="btn btn-primary" th:href="@{/usuarios/{id}/tareas/nueva(id=${usuario.id})}"> Nueva tarea</a>
             <a class="btn btn-link" href="/logout">Salir</a></p>
         </div>

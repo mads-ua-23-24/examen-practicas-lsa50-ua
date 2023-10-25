@@ -60,13 +60,18 @@ public class TareaController {
 
     @GetMapping("/usuarios/{id}/tareas")
     public String listadoTareas(@PathVariable(value="id") Long idUsuario, Model model, HttpSession session) {
-
+        int duracionTotal = 0;
         comprobarUsuarioLogeado(idUsuario);
 
         UsuarioData usuario = usuarioService.findById(idUsuario);
         List<TareaData> tareas = tareaService.allTareasUsuario(idUsuario);
         model.addAttribute("usuario", usuario);
         model.addAttribute("tareas", tareas);
+        for (TareaData tarea : tareas) {
+            duracionTotal += tarea.getDuracion();
+        }
+        model.addAttribute("duracionTotal", duracionTotal);
+
         return "listaTareas";
     }
 
@@ -117,6 +122,19 @@ public class TareaController {
 
         tareaService.borraTarea(idTarea);
         return "";
+    }
+
+    @PostMapping("/tareas/{id}/añadirDuracion")
+    public String añadir1DuracionTarea(@PathVariable(value="id") Long idTarea, HttpSession session) {
+        TareaData tarea = tareaService.findById(idTarea);
+        if (tarea == null) {
+            throw new TareaNotFoundException();
+        }
+
+        comprobarUsuarioLogeado(tarea.getUsuarioId());
+
+        tareaService.añade1DuracionTarea(idTarea);
+        return "redirect:/usuarios/" + tarea.getUsuarioId() + "/tareas";
     }
 }
 
