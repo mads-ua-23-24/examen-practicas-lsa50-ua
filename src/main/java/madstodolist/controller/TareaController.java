@@ -60,13 +60,18 @@ public class TareaController {
 
     @GetMapping("/usuarios/{id}/tareas")
     public String listadoTareas(@PathVariable(value="id") Long idUsuario, Model model, HttpSession session) {
-
+        int duracionTotal = 0;
         comprobarUsuarioLogeado(idUsuario);
 
         UsuarioData usuario = usuarioService.findById(idUsuario);
         List<TareaData> tareas = tareaService.allTareasUsuario(idUsuario);
         model.addAttribute("usuario", usuario);
         model.addAttribute("tareas", tareas);
+        for (TareaData tarea : tareas) {
+            duracionTotal += tarea.getDuracion();
+        }
+        model.addAttribute("duracionTotal", duracionTotal);
+
         return "listaTareas";
     }
 

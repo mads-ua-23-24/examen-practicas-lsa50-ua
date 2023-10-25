@@ -224,4 +224,25 @@ public class TareaWebTest {
                 .andExpect(redirectedUrl(urlRedirect));
 
     }
+
+    @Test
+    public void testComprobanteElementosDuracionHorasEnListado() throws Exception {
+        // GIVEN
+        // Un usuario con dos tareas en la BD
+        Map<String, Long> ids = addUsuarioTareasBD();
+        Long usuarioId = ids.get("usuarioId");
+        Long tareaLavarCocheId = ids.get("tareaId");
+
+        // Ver el comentario en el primer test
+        when(managerUserSession.usuarioLogeado()).thenReturn(usuarioId);
+
+        String urlListado = "/usuarios/" + usuarioId + "/tareas";
+
+        this.mockMvc.perform(get(urlListado))
+                .andExpect(content().string(containsString("Horas")))
+                .andExpect(content().string(containsString("+1")))
+                .andExpect(content().string(containsString("Duración total tareas: ")));
+
+
+    }
 }
