@@ -200,4 +200,28 @@ public class TareaWebTest {
         this.mockMvc.perform(get(urlListado))
                 .andExpect(content().string(containsString("Limpiar cristales coche")));
     }
+
+    @Test
+    public void AñadirDuracionATarea() throws Exception {
+        // GIVEN
+        // Un usuario con dos tareas en la BD
+        Map<String, Long> ids = addUsuarioTareasBD();
+        Long usuarioId = ids.get("usuarioId");
+        Long tareaLavarCocheId = ids.get("tareaId");
+
+        // Ver el comentario en el primer test
+        when(managerUserSession.usuarioLogeado()).thenReturn(usuarioId);
+
+        // WHEN, THEN
+        // realizamos una petición POST al endpoint para editar una tarea
+
+        String urlEditar = "/tareas/" + tareaLavarCocheId + "/añadirDuracion";
+        String urlRedirect = "/usuarios/" + usuarioId + "/tareas";
+
+        this.mockMvc.perform(post(urlEditar)
+                        .param("titulo", "Limpiar cristales coche"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(urlRedirect));
+
+    }
 }

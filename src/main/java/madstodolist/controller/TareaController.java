@@ -118,5 +118,18 @@ public class TareaController {
         tareaService.borraTarea(idTarea);
         return "";
     }
+
+    @PostMapping("/tareas/{id}/añadirDuracion")
+    public String añadir1DuracionTarea(@PathVariable(value="id") Long idTarea, HttpSession session) {
+        TareaData tarea = tareaService.findById(idTarea);
+        if (tarea == null) {
+            throw new TareaNotFoundException();
+        }
+
+        comprobarUsuarioLogeado(tarea.getUsuarioId());
+
+        tareaService.añade1DuracionTarea(idTarea);
+        return "redirect:/usuarios/" + tarea.getUsuarioId() + "/tareas";
+    }
 }
 
