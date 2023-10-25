@@ -25,6 +25,9 @@ public class Tarea implements Serializable {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @NotNull
+    private int duracion = 0;
+
     // Constructor vacío necesario para JPA/Hibernate.
     // No debe usarse desde la aplicación.
     public Tarea() {}
@@ -68,6 +71,14 @@ public class Tarea implements Serializable {
             // Añade la tarea a la lista de tareas del usuario
             usuario.addTarea(this);
         }
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
     @Override
