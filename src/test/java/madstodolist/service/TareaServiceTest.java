@@ -147,4 +147,16 @@ public class TareaServiceTest {
         assertThat(tareaService.usuarioContieneTarea(usuarioId,tareaId)).isTrue();
     }
 
+    @Test
+    public void añadirDuracion(){
+
+        Map<String, Long> ids = addUsuarioTareasBD();
+        Long usuarioId = ids.get("usuarioId");
+        Long tareaId = ids.get("tareaId");
+
+        tareaService.añade1DuracionTarea(tareaId);
+
+        assertThat(tareaService.findById(tareaId).getDuracion()).isEqualTo(1);
+    }
+
 }
