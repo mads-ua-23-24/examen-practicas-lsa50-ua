@@ -89,6 +89,17 @@ public class TareaService {
     }
 
     @Transactional
+    public void añade1DuracionTarea(Long idTarea) {
+        logger.debug("Añadiendo 1 a la duración de la tarea " + idTarea);
+        Tarea tarea = tareaRepository.findById(idTarea).orElse(null);
+        if (tarea == null) {
+            throw new TareaServiceException("No existe tarea con id " + idTarea);
+        }
+        tarea.setDuracion(tarea.getDuracion() + 1);
+        tareaRepository.save(tarea);
+    }
+
+    @Transactional
     public boolean usuarioContieneTarea(Long usuarioId, Long tareaId) {
         Tarea tarea = tareaRepository.findById(tareaId).orElse(null);
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
