@@ -25,6 +25,7 @@ public class Tarea implements Serializable {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @NotNull
     private int duracion = 0;
 
     // Constructor vacío necesario para JPA/Hibernate.
